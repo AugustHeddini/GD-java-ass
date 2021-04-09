@@ -15,7 +15,7 @@ public class Venue {
     }
 
     /**
-     * Initialize class fields
+     * Initialize the described scenario
      */
     public void init() {
         bands.add(new Band("Spoke 'n hub"));
@@ -37,19 +37,33 @@ public class Venue {
 
         // Read from command line and act
         Scanner clin = new Scanner(System.in);
-        System.out.print("> ");
-        while (clin.hasNext()) {
+        String[] currentIn;
 
-            switch (clin.nextLine().toLowerCase()) {
+        System.out.print("> ");                                     // Print prompt
+        while (clin.hasNext()) {
+            currentIn = clin.nextLine().toLowerCase().split(" ");
+            switch (currentIn[0]) {
+                case "h":
                 case "help":
                     printHelp();
                     break;
-                case "h":
-                    printHelp();
-                    break;
+                case "l":
                 case "list":
                     listInfo();
                     break;
+                case "play":
+                    if (currentIn.length > 1) {
+                        if (currentIn[1].equals("one")) {
+                            playNight();
+                            break;
+                        }
+                        System.out.println("You have chosen to play " + currentIn[1] + " nights!");
+                        // TODO play nights
+                    }
+                    playNight();
+                    break;
+                case "q":
+                case "quit":
                 case "exit":
                     System.out.println("Goodbye!");
                     System.exit(0);
@@ -57,11 +71,18 @@ public class Venue {
                     System.out.println("Invalid command! For more info use \"help\".");
                     break;
             }
-            System.out.print("> ");
+            System.out.print("> ");                                 // Print prompt
         }
 
     }
 
+    private void playNight() {
+        //TODO
+    }
+
+    /**
+     * Lists all info about the current configuration of bands and their members
+     */
     private void listInfo() {
         System.out.println("----------------");
         for (Band b : bands) {
