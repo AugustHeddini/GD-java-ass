@@ -8,7 +8,7 @@ public class Venue {
     private ArrayList<Band> bands;
 
     /**
-     * Constructor
+     * Constructor for the Venue class
      */
     public Venue() {
         bands = new ArrayList<Band>();
@@ -19,7 +19,14 @@ public class Venue {
      */
     public void init() {
         bands.add(new Band("Spoke 'n hub"));
+        bands.get(0).addMember(new Musician("Liza Baar", new Instrument("Bender")));
+        bands.get(0).addMember(new Musician("Null Beat", new Instrument("McFaren")));
+        bands.get(0).addMember(new Musician("Void", new Instrument("Lorg")));
+
         bands.add(new Band("Berats"));
+        bands.get(1).addMember(new Musician("Stringsteen", new Instrument("Gibson")));
+        bands.get(1).addMember(new Musician("Xindea", new Instrument("Toyota")));
+        bands.get(1).addMember(new Musician("Captor", new Instrument("Suzuki")));
     }
 
     /**
@@ -39,7 +46,7 @@ public class Venue {
         Scanner clin = new Scanner(System.in);
         String[] currentIn;
 
-        System.out.print("> ");                                     // Print prompt
+        System.out.print("\n> ");                                     // Print prompt
         while (clin.hasNext()) {
             currentIn = clin.nextLine().toLowerCase().split(" ");
             switch (currentIn[0]) {
@@ -52,6 +59,8 @@ public class Venue {
                     listInfo();
                     break;
                 case "play":
+                    // If the number of nights to play is specified, parse it
+                    // else default one
                     if (currentIn.length > 1) {
                         if (currentIn[1].equals("one")) {
                             playNight();
@@ -71,24 +80,37 @@ public class Venue {
                     System.out.println("Invalid command! For more info use \"help\".");
                     break;
             }
-            System.out.print("> ");                                 // Print prompt
+            System.out.print("\n> ");                                 // Print prompt
         }
 
     }
 
+    /**
+     * Plays one night and executes the following logic:
+     * One member will randomly leave each Band.
+     * Each Band will then recruit a new Musician
+     */
     private void playNight() {
         //TODO
     }
 
     /**
-     * Lists all info about the current configuration of bands and their members
+     * Lists all info about the current configuration of Bands and their Musicians
      */
     private void listInfo() {
+        System.out.println("Our bands:");
         System.out.println("----------------");
         for (Band b : bands) {
-            System.out.print("BAND - ");
             System.out.println(b);
-            // TODO print musician info
+            System.out.println("Featuring:");
+            // Print musician info
+            for (Musician m : b.getMembers()) {
+                System.out.println("    " + m);
+            }
+            // Newline for all except last
+            if (!(b == bands.get(bands.size()-1))) {
+                System.out.println();
+            }
         }
         System.out.println("----------------");
     }
@@ -99,9 +121,8 @@ public class Venue {
     private void printHelp() {
         System.out.println("Valid commands:");
         System.out.println("List - Lists the name of all bands, their members and the properties of their instruments");
-        System.out.println("Play one night - Plays one night of Venus logic");
-        System.out.println("Exit - Exits the program");
-        System.out.println();
+        System.out.println("Play one night - Plays one night of Venue logic");
+        System.out.println("Exit or Quit - Exits the program");
     }
 
 }

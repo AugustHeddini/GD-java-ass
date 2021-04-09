@@ -12,4 +12,8 @@ public class Instrument {
         return manufacturer;
     }
 
+    public String toString() {
+        return manufacturer;
+    }
+
 }

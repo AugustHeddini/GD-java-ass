@@ -6,7 +6,7 @@ public class Band {
     private ArrayList<Musician> members;
 
     /**
-     * Constructor
+     * Constructor for the Band class
      * @param name The name of the Band
      */
     public Band(String name) {
