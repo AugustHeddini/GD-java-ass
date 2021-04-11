@@ -37,5 +37,4 @@ public abstract class Instrument {
     public String toString() {
         return manufacturer + " " + type;
     }
-
 }

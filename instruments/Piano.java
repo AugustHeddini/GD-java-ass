@@ -21,5 +21,4 @@ public class Piano extends KeyInstrument {
     public String toString() {
         return super.toString() + "\n\t" + (isAcoustic ? "Acoustic" : "Electronic");
     }
-    
 }

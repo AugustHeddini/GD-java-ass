@@ -18,5 +18,4 @@ public class Guitar extends StrumInstrument {
     public String toString() {
         return super.toString();
     }
-
 }

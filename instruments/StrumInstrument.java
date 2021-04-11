@@ -25,5 +25,4 @@ public abstract class StrumInstrument extends Instrument {
         return super.toString() + " with specifications:\n\tNumber of strings: " + nrStrings 
                 + "\n\tString size: " + stringSize + "mm";
     }
-    
 }

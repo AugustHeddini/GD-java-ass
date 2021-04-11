@@ -43,13 +43,14 @@ public class Venue {
      */
     public void manage() {
 
+        // Print greeting
         System.out.println("A new venue has opened up!");
         System.out.println("Please welcome our current bands:\n----------------");
         for (Band b : bands) {
             System.out.println(b);
         }
         System.out.println("----------------");
-        printHelp();
+        printHelp();                                                    // Print initial usage info
 
         // Read from command line and act
         Scanner clin = new Scanner(System.in);
@@ -57,7 +58,7 @@ public class Venue {
 
         System.out.print("\n> ");                                       // Print prompt
         while (clin.hasNext()) {
-            currentIn = clin.nextLine().toLowerCase().split(" ");
+            currentIn = clin.nextLine().toLowerCase().split(" ");       // Tokenize
             if (currentIn.length == 0) { continue; }                    // Handles empty input line          
             switch (currentIn[0]) {
                 case "h":
@@ -109,9 +110,9 @@ public class Venue {
         
         // Kicking band members
         ArrayList<Musician> kicked = new ArrayList<>(bands.size());
-        for (Band b : bands) {
+        for (Band b : bands) {                                          // Kick a random member from every (nonempty) band
             if (!b.getMembers().isEmpty()) {
-                kicked.add(b.removeMember(rnd.nextInt(b.getMembers().size())));     // Kick a random member
+                kicked.add(b.removeMember(rnd.nextInt(b.getMembers().size())));
                 System.out.println("Musician " + kicked.get(kicked.size()-1).getName() + " left " + b);
             }
         }
@@ -121,13 +122,13 @@ public class Venue {
             Band tryingToJoin = bands.get(rnd.nextInt(bands.size()));
             Musician m = unemployed.get(i);
 
-            if (tryingToJoin.addMember(m)) {
+            if (tryingToJoin.addMember(m)) {                            // Will return true if add was successful
                 unemployed.remove(m);
                 System.out.println("Musician " + m.getName() + " joined " + tryingToJoin);
             }
         }
 
-        // Add those freshly kicked to the free list
+        // Add those freshly kicked to the unemployed list
         unemployed.addAll(kicked);
     }
 
@@ -175,8 +176,9 @@ public class Venue {
      */
     private void printHelp() {
         System.out.println("Valid commands:");
-        System.out.println("List - Lists the name of all bands, their members and the properties of their instruments");
+        System.out.println("List - Lists the name of all bands, their members and the properties of their instruments, as well as Musicians currently not in any Band");
         System.out.println("Play one night - Plays one night of Venue logic");
+        System.out.println("Play X nights - Plays several nights of Venue logic");
         System.out.println("Exit or Quit - Exits the program");
     }
 
@@ -193,5 +195,4 @@ public class Venue {
             return false;
         }
     }
-
 }

@@ -47,12 +47,11 @@ public class Band {
     public Musician removeMember(int memberIndex) {
         return members.remove(memberIndex);
     }
-    
+
      /**
      * Returns a String represenation of the band (band name).
      */
     public String toString() {
         return name;
     }
-
 }

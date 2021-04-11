@@ -21,5 +21,4 @@ public abstract class KeyInstrument extends Instrument {
     public String toString() {
         return super.toString() + " with specifications:\n\tNumber of keys: " + nrKeys;
     }
-    
 }

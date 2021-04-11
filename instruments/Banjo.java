@@ -17,6 +17,5 @@ public class Banjo extends StrumInstrument {
      */
     public String toString() {
         return super.toString();
-    }
-    
+    } 
 }

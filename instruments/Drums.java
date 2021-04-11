@@ -20,5 +20,4 @@ public class Drums extends Instrument {
     public String toString() {
         return super.toString() + " with specifications:\n\t" + (hasHiHat ? "Has a Hi-hat" : "Without Hi-hat");
     }
-
 }
