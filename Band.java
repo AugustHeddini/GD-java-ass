@@ -15,18 +15,20 @@ public class Band {
     }
 
     /**
-     * Returns the string represenation of the band (band name).
+     * Attempts to add a member to the band.
+     * If a Musician playing the same type of Instrument is already
+     * in the band, the applicant is rejected.
+     * @param mem The applying Musician
+     * @return Boolean representing whether or not the Musician was allowed to join
      */
-    public String toString() {
-        return name;
-    }
-
-    /**
-     * Adds a member to the band member list
-     * @param mem The Musician to be added
-     */
-    public void addMember(Musician mem) {
+    public boolean addMember(Musician mem) {
+        for (Musician m : members) {
+            if (m.getInstrumentType().equals(mem.getInstrumentType())) {    // If a Musician playing the same instrument already exists, reject the applicant
+                return false;
+            }
+        }
         members.add(mem);
+        return true;
     }
 
     /**
@@ -38,17 +40,19 @@ public class Band {
     }
 
     /**
-     * Removes a Musician from the band member list at the specified index.
-     * @param memberIndex The index of the Musician to be removed from the member array
-     * @return True if the index was successfully removed, false otherwise
+     * Removes a musician from the band.
+     * @param memberIndex The index of the musician to be removed
+     * @return The Musician which was removed
      */
-    public boolean removeMember(int memberIndex) {
-        try {
-            members.remove(memberIndex);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+    public Musician removeMember(int memberIndex) {
+        return members.remove(memberIndex);
+    }
+    
+     /**
+     * Returns a String represenation of the band (band name).
+     */
+    public String toString() {
+        return name;
     }
 
 }
