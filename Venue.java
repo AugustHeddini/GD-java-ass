@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
-import instruments.*;
 
 public class Venue {
 
@@ -13,29 +12,9 @@ public class Venue {
      * Constructor for the Venue class
      */
     public Venue() {
-        rnd = new Random(System.currentTimeMillis());   // Seed random function
+        rnd = new Random(System.currentTimeMillis());                   // Seed random function
         bands = new ArrayList<Band>();
         unemployed = new ArrayList<Musician>();
-    }
-
-    /**
-     * Initialize the described scenario
-     */
-    public void init() {
-        // Add first band and musicians
-        bands.add(new Band("Spoke 'n hub"));
-        bands.get(0).addMember(new Musician("Liza Baar", new Guitar("Bender", 5, 0.4)));
-        bands.get(0).addMember(new Musician("Null Beat", new Piano("McFaren", 51, true)));
-        bands.get(0).addMember(new Musician("Void", new Synthesizer("Lorg", 47, true)));
-
-        // Add second band and musicians
-        bands.add(new Band("Berats"));
-        bands.get(1).addMember(new Musician("Stringsteen", new Banjo("Gibson", 4, 8)));
-        bands.get(1).addMember(new Musician("Xindea", new Drums("Toyota", true)));
-        bands.get(1).addMember(new Musician("Captor", new Synthesizer("Suzuki", 72, false)));
-
-        // Add musicians without bands
-        unemployed.add(new Musician("Slam Itur", new Guitar("TweEntiOan", 5, 0.2)));
     }
 
     /**
@@ -45,9 +24,11 @@ public class Venue {
 
         // Print greeting
         System.out.println("A new venue has opened up!");
-        System.out.println("Please welcome our current bands:\n----------------");
-        for (Band b : bands) {
-            System.out.println(b);
+        if (bands.size() > 0) {                                         // Show Band info if there are any
+            System.out.println("Please welcome our current bands:\n----------------");
+            for (Band b : bands) {
+                System.out.println(b);
+            }
         }
         System.out.println("----------------");
         printHelp();                                                    // Print initial usage info
@@ -80,6 +61,7 @@ public class Venue {
                         if (isNumber(currentIn[1])) {                   // Ensures that the number of nights input is valid
                             System.out.println("You have chosen to play " + currentIn[1] + " nights!");
                             playNights(Integer.parseInt(currentIn[1]));
+                            break;
                         } else {
                             System.out.println("Invalid number of nights. If you wish to play more than one night, please enter the number in digits.");
                             break;
@@ -98,7 +80,23 @@ public class Venue {
             }
             System.out.print("\n> ");                                   // Print prompt
         }
+        clin.close();                                                   // Close input Scanner
+    }
 
+    /**
+     * Adds an external Band to the bands list
+     * @param b The Band to be added
+     */
+    public void addBand(Band b) {
+        bands.add(b);
+    }
+
+    /**
+     * Adds a Musician without Band to the unemployed list
+     * @param m The Musician to be added
+     */
+    public void addFreeMusician(Musician m) {
+        unemployed.add(m);
     }
 
     /**
@@ -107,6 +105,10 @@ public class Venue {
      * Each Band will then recruit a new Musician
      */
     private void playNight() {
+        if (bands.size() < 1) {                                         // Handle playing a night without Bands
+            System.out.println("The night is silent as no Bands play...");
+            return;
+        }
         
         // Kicking band members
         ArrayList<Musician> kicked = new ArrayList<>(bands.size());
@@ -137,10 +139,14 @@ public class Venue {
      * @param n The number of nights to be played
      */
     private void playNights(int n) {
-        for (int i = 0; i < n; i++) {
+        if (bands.size() < 1) {                                         // Handle playing many nights without Bands
+            System.out.println("Each night is as silent as the last without Bands...");
+            return;
+        }
+        for (int i = 0; i < n; i++) {                                   // Play several nights
             System.out.println("Night " + (i+1));
             playNight();
-            System.out.println();
+            if (i < n-1) { System.out.println(); }                      // Spacing for all but final night
         }
     }
 
@@ -148,27 +154,39 @@ public class Venue {
      * Lists all info about the current configuration of Bands and their Musicians
      */
     private void listInfo() {
-        System.out.println("Our bands:");
-        System.out.println("----------------");
-        for (Band b : bands) {
-            System.out.println("- " + b + " -");
-            System.out.println("Featuring:");
-            // Print musician info
-            for (Musician m : b.getMembers()) {
+        // List Band info
+        if (bands.size() > 0) {
+            System.out.println("Our bands:");
+            System.out.println("----------------");
+            for (Band b : bands) {
+                System.out.println("- " + b + " -");
+                System.out.println("Featuring:");
+                // Print musician info
+                for (Musician m : b.getMembers()) {
+                    System.out.println(m);
+                }
+                // Newline for all except last
+                if (!(b == bands.get(bands.size()-1))) {
+                    System.out.println();
+                }
+            }
+        } else {
+            System.out.println("There are currently no Bands playing at this Venue!");
+        }
+
+        System.out.println("----------------");                         // Spacer
+
+        // List free Musician info
+        if (unemployed.size() > 0) {
+            System.out.println("Musicians currently looking for bands:");
+            System.out.println("----------------");
+            for (Musician m : unemployed) {
                 System.out.println(m);
             }
-            // Newline for all except last
-            if (!(b == bands.get(bands.size()-1))) {
-                System.out.println();
-            }
+            System.out.println("----------------");
+        } else {
+            System.out.println("There are currently no Musicians looking for Bands!");
         }
-        System.out.println("----------------");
-        System.out.println("Musicians currently looking for bands:");
-        System.out.println("----------------");
-        for (Musician m : unemployed) {
-            System.out.println(m);
-        }
-        System.out.println("----------------");
     }
 
     /**
@@ -176,10 +194,11 @@ public class Venue {
      */
     private void printHelp() {
         System.out.println("Valid commands:");
-        System.out.println("List - Lists the name of all bands, their members and the properties of their instruments, as well as Musicians currently not in any Band");
-        System.out.println("Play one night - Plays one night of Venue logic");
+        System.out.println("Help, h - Displays this help information");
+        System.out.println("List, l - Lists the name of all bands, their members and the properties of their instruments, as well as Musicians currently not in any Band");
+        System.out.println("Play one night, Play - Plays one night of Venue logic");
         System.out.println("Play X nights - Plays several nights of Venue logic");
-        System.out.println("Exit or Quit - Exits the program");
+        System.out.println("Exit, Quit, q - Exits the program");
     }
 
     /**
